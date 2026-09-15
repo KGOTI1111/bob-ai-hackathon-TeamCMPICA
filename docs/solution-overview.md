@@ -2,40 +2,38 @@
 
 ## What We Built
 
-[Describe your solution in plain language. Avoid jargon — write as if explaining to a smart colleague unfamiliar with your tech stack.]
+What We Built
+We built a centralized logistics optimization platform that monitors active freight in real time, flags route risks before they cause delays, and tracks cargo temperatures to prevent spoilage. The system brings together fleet tracking, disruption handling, and cold-chain thermal monitoring into a single interface. Instead of discovering damaged goods at delivery, logistics operators get immediate warnings and actionable routing options to protect high-value cargo.
 
 ## How It Works
 
-[Explain the core mechanism step by step. A numbered list or simple flow works well here.]
 
-1. [Step 1: e.g., "User connects their GitHub repository via OAuth"]
-2. [Step 2: e.g., "The system ingests pipeline logs and feeds them to watsonx.ai"]
-3. [Step 3: e.g., "An anomaly score is computed and displayed on the dashboard"]
-4. [Step 4: e.g., "Alerts are sent to Slack when the score exceeds a threshold"]
+1. Telemetry Ingestion: Sensor telemetry and location updates from trucks, vessels, and temperature-controlled containers flow directly into backend API routes
+2. Thermal & Disruption Monitoring: The system continuously compares live cargo conditions against safe thermal limits and evaluates external route hazards via the disruption engine
+3. Optimized Rerouting & Asset Allocation: If a temperature excursion or route bottleneck is flagged, the platform calculates alternative paths and reallocates available fleet resources
+4. Dashboard Alerting: Real-time updates, asset statuses, and risk alerts are pushed to the web dashboard (app.js, index.html) for immediate operator action.
 
 ## Architecture Diagram
 
-> See [`architecture.md`](architecture.md) for the detailed diagram.
+> See (architecture.md) for the detailed diagram.
 
-[Optionally include a simple ASCII or Mermaid diagram here for quick reference.]
 
 ```
-[User] → [Frontend: React] → [API: FastAPI] → [watsonx.ai] → [Dashboard]
-                                    ↓
-                             [PostgreSQL DB]
+
 ```
 
 ## Key Design Decisions
 
 | Decision | Rationale |
 |---|---|
-| [e.g., Used watsonx.ai for anomaly detection] | [e.g., Pre-trained models reduced time-to-value vs. building from scratch] |
-| [Decision 2] | [Rationale 2] |
-| [Decision 3] | [Rationale 3] |
+| Modular Route Architecture | Decoupling endpoints (cold_chain.py, disruptions.py, fleet.py, shipments.py) keeps thermal monitoring separate from fleet allocation, ensuring scalability.] |
+| Real-time Telemetry Schemas | Using strict Pydantic/Python schemas (schemas.py) validates incoming sensor data immediately to block corrupted readings. |
+| Standard SQL Relational Layer | Storing entities in structured DDL schemas (schema.sql) ensures rapid relational queries across active shipments, fleet assets, and log histories. |
 
 ## IBM Technologies Used
 
-[Explain specifically HOW you used each IBM technology — not just that you used it.]
+1. IBM Cloud / Code Engine: Used for hosting and deploying the containerized FastAPI backend and frontend assets, providing high availability and continuous scaling for real-time telemetry processing.
+2. watsonx.ai Integration Ready: Designed to connect directly with IBM watsonx.ai models to analyze historical disruption patterns and predict temperature excursion risks based on ambient environmental forecasts.
 
-- **[IBM Tech 1, e.g., watsonx.ai]:** [How it was used — e.g., "Used the `ibm/granite-13b-instruct-v2` model via the Python SDK to classify anomaly types from log text."]
-- **[IBM Tech 2]:** [How it was used]
+- **IBM Cloud / Code Engine:** Used for hosting and deploying the containerized FastAPI backend and frontend assets, providing high availability and continuous scaling for real-time telemetry processing.
+- **watsonx.ai Integration Ready:** Ready: Designed to connect directly with IBM watsonx.ai models to analyze historical disruption patterns and predict temperature excursion risks based on ambient environmental forecasts.
