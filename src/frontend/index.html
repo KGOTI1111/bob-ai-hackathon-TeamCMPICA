@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Chain Optimizer - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>📦 Supply Chain Optimizer</h1>
+                <p>Real-time Disruption Detection & Fleet Management</p>
+            </div>
+            <div class="header-status">
+                <span id="api-status" class="status-indicator online">● API Connected</span>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="shipments">Shipments</button>
+            <button class="tab-btn" data-tab="disruptions">Disruptions</button>
+            <button class="tab-btn" data-tab="fleet">Fleet</button>
+            <button class="tab-btn" data-tab="cold-chain">Cold Chain</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <section id="dashboard" class="tab-content active">
+                <h2>Real-Time Dashboard</h2>
+                
+                <div class="dashboard-grid">
+                    <!-- KPI Cards -->
+                    <div class="kpi-section">
+                        <h3>Shipments Overview</h3>
+                        <div class="kpi-cards">
+                            <div class="kpi-card">
+                                <div class="kpi-label">Total Shipments</div>
+                                <div class="kpi-value" id="total-shipments">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">In Transit</div>
+                                <div class="kpi-value" id="in-transit">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Delayed</div>
+                                <div class="kpi-value alert" id="delayed">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Delivered</div>
+                                <div class="kpi-value success" id="delivered">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cold Chain KPIs -->
+                    <div class="kpi-section">
+                        <h3>Cold Chain Status</h3>
+                        <div class="kpi-cards">
+                            <div class="kpi-card">
+                                <div class="kpi-label">Cold Chain Shipments</div>
+                                <div class="kpi-value" id="cold-chain-count">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">High Risk Shipments</div>
+                                <div class="kpi-value alert" id="high-risk">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Temperature Alerts</div>
+                                <div class="kpi-value alert" id="temp-alerts">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Critical Severity</div>
+                                <div class="kpi-value critical" id="critical-alerts">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Disruptions KPIs -->
+                    <div class="kpi-section">
+                        <h3>Active Disruptions</h3>
+                        <div class="kpi-cards">
+                            <div class="kpi-card">
+                                <div class="kpi-label">Active Disruptions</div>
+                                <div class="kpi-value" id="active-disruptions">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Affected Shipments</div>
+                                <div class="kpi-value alert" id="affected-count">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Critical Disruptions</div>
+                                <div class="kpi-value critical" id="critical-disruptions">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Regions Affected</div>
+                                <div class="kpi-value" id="regions-affected">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fleet KPIs -->
+                    <div class="kpi-section">
+                        <h3>Fleet Status</h3>
+                        <div class="kpi-cards">
+                            <div class="kpi-card">
+                                <div class="kpi-label">Total Assets</div>
+                                <div class="kpi-value" id="total-assets">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Idle Assets</div>
+                                <div class="kpi-value success" id="idle-assets">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">In Transit</div>
+                                <div class="kpi-value" id="fleet-in-transit">0</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Cold Chain Capable</div>
+                                <div class="kpi-value" id="cold-capable">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alert Panels -->
+                <div class="alerts-section">
+                    <div class="alert-panel">
+                        <h3>⚠️ Critical Temperature Alerts</h3>
+                        <div id="critical-temp-alerts" class="alert-list">
+                            <p>Loading...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="alert-panel">
+                        <h3>🚨 Active Disruptions</h3>
+                        <div id="active-disruptions-list" class="alert-list">
+                            <p>Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shipments Tab -->
+            <section id="shipments" class="tab-content">
+                <h2>Shipments Management</h2>
+                
+                <div class="filter-section">
+                    <input type="text" id="shipment-search" placeholder="Search shipment ID..." class="search-box">
+                    <select id="status-filter" class="filter-select">
+                        <option value="">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="in_transit">In Transit</option>
+                        <option value="delayed">Delayed</option>
+                        <option value="diverted">Diverted</option>
+                        <option value="delivered">Delivered</option>
+                    </select>
+                    <label><input type="checkbox" id="cold-chain-filter"> Cold Chain Only</label>
+                </div>
+
+                <div class="table-container">
+                    <table id="shipments-table">
+                        <thead>
+                            <tr>
+                                <th>Shipment ID</th>
+                                <th>Origin</th>
+                                <th>Destination</th>
+                                <th>Cargo</th>
+                                <th>Value</th>
+                                <th>Status</th>
+                                <th>Current Location</th>
+                                <th>ETA</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="shipments-tbody">
+                            <tr><td colspan="10">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Disruptions Tab -->
+            <section id="disruptions" class="tab-content">
+                <h2>Supply Chain Disruptions</h2>
+                
+                <div class="filter-section">
+                    <select id="disruption-severity" class="filter-select">
+                        <option value="">All Severities</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                    <label><input type="checkbox" id="active-only"> Active Only</label>
+                </div>
+
+                <div id="disruptions-list" class="list-container">
+                    <p>Loading...</p>
+                </div>
+            </section>
+
+            <!-- Fleet Tab -->
+            <section id="fleet" class="tab-content">
+                <h2>Fleet Assets Management</h2>
+                
+                <div class="filter-section">
+                    <select id="asset-type-filter" class="filter-select">
+                        <option value="">All Types</option>
+                        <option value="truck">Trucks</option>
+                        <option value="container">Containers</option>
+                        <option value="vessel">Vessels</option>
+                    </select>
+                    <select id="asset-status-filter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="idle">Idle</option>
+                        <option value="in_transit">In Transit</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
+                    <label><input type="checkbox" id="cold-chain-asset-filter"> Cold Chain Capable</label>
+                </div>
+
+                <div class="table-container">
+                    <table id="fleet-table">
+                        <thead>
+                            <tr>
+                                <th>Asset ID</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Location</th>
+                                <th>Capacity (tons)</th>
+                                <th>Cold Chain</th>
+                                <th>Current Shipment</th>
+                                <th>Available From</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fleet-tbody">
+                            <tr><td colspan="9">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Cold Chain Tab -->
+            <section id="cold-chain" class="tab-content">
+                <h2>Cold Chain Monitoring</h2>
+                
+                <div class="filter-section">
+                    <input type="text" id="cold-shipment-search" placeholder="Search shipment ID..." class="search-box">
+                    <select id="alert-severity-filter" class="filter-select">
+                        <option value="">All Severities</option>
+                        <option value="info">Info</option>
+                        <option value="warning">Warning</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                    <label><input type="checkbox" id="unacknowledged-only"> Unacknowledged Only</label>
+                </div>
+
+                <div class="temperature-alerts">
+                    <h3>Temperature Excursion Alerts</h3>
+                    <div id="temp-alerts-list" class="alert-list">
+                        <p>Loading...</p>
+                    </div>
+                </div>
+
+                <div class="sensor-readings">
+                    <h3>Recent Sensor Readings</h3>
+                    <div class="table-container">
+                        <table id="sensors-table">
+                            <thead>
+                                <tr>
+                                    <th>Sensor ID</th>
+                                    <th>Shipment</th>
+                                    <th>Temperature (°C)</th>
+                                    <th>Humidity (%)</th>
+                                    <th>Location</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sensors-tbody">
+                                <tr><td colspan="6">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Supply Chain Optimizer | Real-time logistics intelligence</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
