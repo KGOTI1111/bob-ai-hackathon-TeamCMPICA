@@ -2,8 +2,13 @@
 
 ## System Architecture
 
-[Describe the overall architecture of your system. Replace the Mermaid diagram below with your actual architecture.]
-
+graph TD
+    A[Logistics Operator / Web Browser] -->|HTTP / Static Assets| B[Frontend Dashboard - JS/HTML/CSS]
+    B -->|REST API Requests| C[Backend Service - FastAPI/Flask Stack]
+    C -->|Telemetry Validation| D[Data Schemas & Models]
+    C -->|Relational Queries| E[Database Layer - SQL]
+    C -->|Risk & Thermal Analysis| F[IBM watsonx.ai Engine]
+    F -->|Inference & Predictions| C
 ```mermaid
 graph TD
     A[User / Browser] -->|HTTP| B[Frontend - React]
@@ -18,32 +23,30 @@ graph TD
 
 | Component | Technology | Responsibility |
 |---|---|---|
-| Frontend | [e.g., React 18] | [e.g., Dashboard UI, user interaction] |
-| Backend API | [e.g., FastAPI] | [e.g., Business logic, orchestration] |
-| AI / ML | [e.g., watsonx.ai] | [e.g., Anomaly scoring, classification] |
-| Database | [e.g., PostgreSQL] | [e.g., Storing pipeline events and scores] |
-| Notifications | [e.g., Slack API] | [e.g., Alerting on threshold breaches] |
+| Frontend |Vanilla JavaScript, HTML5, CSS3 | Render single-pane-of-glass dashboard, route visualizers, live fleet metrics, and threat alerts |
+| Backend API | Python FastAPI / Flask | Process incoming telemetry, handle application routing, validate payloads, and execute core optimization logic. |
+| API | Python | Execute dedicated logic for thermal excursion monitoring, hazard mitigation, asset management, and shipment state tracking. |
+| Database | SQL / SQLite / PostgreSQL | Maintain persistent relational records for asset locations, thermal thresholds, active routes, and historical logs. |
+| AI Integration | IBM BOB | Analyze historical route hazards and ambient conditions to predict disruptions and thermal breach risks before failure occurs. |
 
 ## Data Flow
 
 [Describe how data moves through your system from input to output.]
 
-1. [e.g., Pipeline logs are ingested via a webhook from GitHub Actions]
-2. [e.g., Logs are preprocessed and chunked into 512-token segments]
-3. [e.g., Each chunk is sent to the watsonx.ai inference endpoint]
-4. [e.g., Anomaly scores are stored in PostgreSQL]
-5. [e.g., The React dashboard polls the API every 30 seconds to refresh]
+1. Telemetry and location data from active cargo, containers, and fleet assets arrive at the backend via modular REST endpoints.
+2. Incoming payloads are validated against strict data schemas (schemas.py) and stored in the database via ORM models.
+3. The disruption and cold-chain engines (disruptions.py, cold_chain.py) evaluate sensor readings against route conditions and thermal safety limits.
+4. Predictive risk profiles are computed through IBM watsonx.ai to identify high-risk routes and recommend asset reallocations.
+5. The frontend dashboard (app.js) polls the backend API to update live shipment maps, asset availability, and real-time hazard alerts for operators.
 
 ## Security Considerations
 
-[Note any security decisions relevant to the architecture — even if basic.]
 
-- [e.g., API keys stored in environment variables, never committed to git]
-- [e.g., All API routes require a Bearer token]
-- [e.g., Database credentials rotated via IBM Secrets Manager]
+
+- Sensitive application configuration and database credentials are managed exclusively via environment variables using .env.example templates and never checked into source control.
+- Clean repository isolation is enforced through .gitignore to prevent compiled Python artifacts (__pycache__) or local secrets from leaking into deployment builds.
+- Input validation is strictly enforced at the API boundary using structured schemas (schemas.py) to prevent malformed telemetry or SQL injection vulnerabilities.
 
 ## Scalability Notes
 
-[Optional: how would this scale beyond the hackathon prototype?]
-
-[e.g., "The FastAPI backend is stateless and could be horizontally scaled behind a load balancer. The watsonx.ai calls are the bottleneck and would benefit from request batching."]
+The backend architecture is stateless, allowing multiple API instances (run.py) to run behind a load balancer on IBM Cloud Code Engine. Relational database performance can be scaled horizontally using PostgreSQL read replicas for heavy telemetry queries, while batching inference requests to IBM watsonx.ai maintains high throughput during network-wide disruption events.
