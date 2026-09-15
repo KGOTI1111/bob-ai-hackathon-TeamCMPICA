@@ -1,17 +1,17 @@
-# 🚀 [Your Project Title Here]
+Supply Chain Optimizer
 
 > ⚠️ **Replace everything in `[ ]` brackets with your actual content before submission.**
 
 ---
 
-## 👥 Team
+## 👥 TeamCMPICA
 
 | Field | Value |
 |---|---|
-| **Team Name** | [Your Team Name] |
-| **Track** | [AI / DevOps / Sustainability / Open] |
-| **Team Lead** | [Name] — [email@ibm.com] |
-| **Members** | [Name 1], [Name 2], [Name 3] |
+| **Team Name** | TeamCMPICA |
+| **Track** | Predictive & Optimized Routing/ Environment Configuration / Cold Chain & Fleet Tracking / Onboarding Documentation] |
+| **Team Lead** | Krish Goti  — krishgoti4399@gmail.com |
+| **Members** | Princy Sakadasariya, Meet Golakiya, Shrushti Savani |
 
 ---
 
@@ -19,25 +19,24 @@
 
 > In 2–3 sentences: What problem does your project solve? Who experiences this problem?
 
-[Describe the real-world problem your project addresses. Be specific about who the user is and what pain point they face.]
-
+Global supply chains struggle with unmonitored route disruptions, inefficient fleet asset allocation, and delayed detection of cold-chain temperature breaches that cause massive cargo losses. Logistics managers, fleet operators, and cold-chain cargo owners continuously face costly cargo spoilage, idle resources, and operational delays because legacy monitoring systems lack real-time predictive capabilities. This project provides real-time tracking, proactive disruption mitigation, and automated fleet optimization to safeguard high-value, temperature-sensitive shipments before failure occurs
 ---
 
 ## 💡 Solution
 
 > In 2–3 sentences: What did you build? How does it solve the problem above?
 
-[Describe your solution clearly. Explain the core mechanism — what makes it work.]
+The Supply Chain Optimizer is a predictive, real-time logistics monitoring and mitigation platform designed to safeguard high-value, temperature-sensitive shipments from disruptions and cargo loss
 
 ---
 
 ## ✨ Key Features
 
-- **Feature 1:** [Brief description — e.g., "Real-time anomaly detection using watsonx.ai"]
-- **Feature 2:** [Brief description]
-- **Feature 3:** [Brief description]
-- **Feature 4:** [Optional]
-- **Feature 5:** [Optional]
+- **Feature 1:** Feature 1: Real-Time Cold-Chain Surveillance — Tracks live sensor data via dedicated API endpoints (cold_chain.py) to detect temperature breaches before cargo spoils
+- **Feature 2:** Automated Disruption Mitigation — Evaluates external route hazards and bottlenecks using dynamic routing logic (disruptions.py) to prevent delay cascades.
+- **Feature 3:** Fleet Asset Optimization — Manages truck, container, and vessel availability (fleet.py) to eliminate idle time and balance overloaded transit corridors.
+- **Feature 4:** End-to-End Shipment Tracking — Provides continuous lifecycle updates and state tracking for active cargo loads across the network (shipments.py).
+- **Feature 5:** Interactive Operations Dashboard — Delivers single-pane visual monitoring, real-time telemetry, and actionable alerts through an integrated web interface (app.js, index.html)
 
 ---
 
@@ -45,11 +44,11 @@
 
 | Category | Technologies |
 |---|---|
-| **Languages** | [e.g., Python, TypeScript] |
-| **Frameworks** | [e.g., FastAPI, React] |
-| **IBM Technologies** | [e.g., watsonx.ai, IBM Bob, IBM Cloud] |
-| **Databases** | [e.g., PostgreSQL, Redis] |
-| **Other** | [e.g., Docker, GitHub Actions] |
+| **Languages** | Python, JavaScript, SQL, HTML, CSS |
+| **Frameworks** | FastAPI / Flask (Python WSGI/ASGI backend stack) |
+| **IBM Technologies** | IBM Cloud Ready, watsonx.ai Integration Ready |
+| **Databases** | PostgreSQL / SQLite |
+| **Other** | RESTful APIs, Python Virtual Environments (venv), Python-dotenv |
 
 ---
 
