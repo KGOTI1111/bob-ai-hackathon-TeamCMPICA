@@ -6,10 +6,11 @@
 
 Before you begin, ensure you have the following installed:
 
-- [ ] [e.g., Python 3.11+]
-- [ ] [e.g., Node.js 18+]
-- [ ] [e.g., Docker Desktop]
-- [ ] [e.g., An IBM Cloud account with watsonx.ai access]
+- [ ] Python 3.10+
+- [ ] PostgreSQL or SQLite
+- [ ] Modern Web Browser (Chrome, Firefox, Edge)
+- [ ] An IBM Cloud account with watsonx.ai access
+- [ ] IBM BOB
 
 ## Environment Variables
 
@@ -21,56 +22,59 @@ cp .env.example .env
 
 | Variable | Description | Required |
 |---|---|---|
-| `WATSONX_API_KEY` | Your IBM watsonx.ai API key | Yes |
-| `WATSONX_PROJECT_ID` | Your watsonx.ai project ID | Yes |
-| `DATABASE_URL` | PostgreSQL connection string | Yes |
-| `SLACK_WEBHOOK_URL` | Slack webhook for alerts | No |
+| DATABASE_URL | Database connection string (e.g., SQLite or PostgreSQL)| Yes |
+| WATSONX_API_KEY | IBM watsonx.ai API key for predictive risk analytics   | Yes |
+| WATSONX_PROJECT_ID | IBM watsonx.ai project ID | Yes |
+| PORT | Backend application running port (default: 8000) | No |
 
 ## Installation
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/[your-org]/[your-repo].git
-cd [your-repo]
+git clone https://github.com/TeamCMPICA/supply-chain-optimizer.git
+cd supply-chain-optimizer
 
-# 2. Install backend dependencies
-[your command — e.g.: pip install -r requirements.txt]
+# 2. Set up Python Virtual Environment
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
 
-# 3. Install frontend dependencies (if applicable)
-[your command — e.g.: cd frontend && npm install]
-
-# 4. Set up the database (if applicable)
-[your command — e.g.: python manage.py migrate]
-```
+# 3. Install backend dependencies
+pip install -r requirements.txt
 
 ## Running the Application
 
-```bash
-# Start the backend
-[your command — e.g.: uvicorn app.main:app --reload]
+# 1. Initialize Database Schema & Seed Data (if using local database)
+sqlite3 optimizer.db < ../database/schema.sql
+sqlite3 optimizer.db < ../database/sample_data.sql
 
-# Start the frontend (in a separate terminal, if applicable)
-[your command — e.g.: cd frontend && npm run dev]
-```
+# 2. Start the FastAPI backend server
+python run.py
 
-The application will be available at: `http://localhost:[PORT]`
+# 3. Launch the Frontend Interface
+# Open supply-chain-optimizer/frontend/index.html directly in any modern browser
+
+The application will be available at: http://localhost:8000
 
 ## Running Tests
 
-```bash
-[your test command — e.g.: pytest tests/ -v]
-```
+# Execute backend module tests
+pytest
 
 ## Quick Demo (Optional)
 
-If you have a demo script or sample data to showcase the project quickly:
+# Seed local database with sample shipment and cold-chain telemetry
+sqlite3 backend/optimizer.db < database/sample_data.sql
 
-```bash
-[e.g.: python demo/seed_demo_data.py]
-[e.g.: open http://localhost:8000/demo]
-```
+# Serve frontend via simple Python HTTP server (alternative to direct file open)
+cd frontend && python -m http.server 3000
 
 ## Troubleshooting
+
+ModuleNotFoundError : Ensure your virtual environment is activated and rerun pip install -r requirements.txt inside the backend/ directory.
+Database connection failed : Verify the DATABASE_URL path in backend/.env or re-apply schema.sql to re-initialize your database instance.
+watsonx.ai 401 Unauthorized Error : Check that WATSONX_API_KEY and WATSONX_PROJECT_ID are correctly set in your backend/.env file.
+CORS issue on Frontend API requests : Ensure the backend server (run.py) is running on http://localhost:8000 before opening index.html.
 
 | Issue | Solution |
 |---|---|
